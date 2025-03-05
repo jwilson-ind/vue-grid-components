@@ -7,6 +7,7 @@ import GridActions from "./GridActions.vue";
 import GridInput from "./GridInput.vue";
 import {formatDate, formatMoney, formatNumber} from "./utilities.js";
 
+const emit = defineEmits(['rendered'])
 const props = defineProps({
     columnIndex: {
         type: Number,
@@ -47,13 +48,21 @@ onMounted(() => {
     renderCellContent();
 });
 
+watch(content, (value) => {
+	emit('rendered', value)
+});
+
 /**
  * Renders content of the cell.  Checks to see whether the content is a function or object with another
  * vue component.
  * */
 function renderCellContent() {
 
-    if(props.column.hasOwnProperty('content') && typeof props.column.content === 'function') {
+    if(props.loading) {
+		return '';
+	}
+
+	if(props.column.hasOwnProperty('content') && typeof props.column.content === 'function') {
         return content.value = props.column.content(props.record);
     }
 
@@ -114,24 +123,25 @@ function renderCellContent() {
             } else if(props.column.hasOwnProperty('field')) {
                 href = getRecordValueForField(props.column.field);
             }
-            let label = props.column.label;
+            content.value = props.column.label ?? (props.column.hasOwnProperty('field') ? getRecordValueForField(props.column.field) : null);
             if(props.column.label && typeof props.column.label === 'function') {
-                label = props.column.label(props.record);
+                content.value = props.column.label(props.record);
             }
             cellApp.value = createApp({
                 render: () => h(GridLink, {
                     href: href,
-                    label: label,
+                    label: content.value,
                     type: props.column.type,
                     target: props.column.target,
                 })
             });
             return cellApp.value.mount(cell.value);
         case 'modelLink':
+			content.value = getRecordValueForField(props.column.field);
             cellApp.value = createApp({
                 render: () => h(GridLink, {
                     href: `${props.column.modelPath}/${props.column.modelIdField ? getRecordValueForField(props.column.modelIdField) : props.record.id}`+(props.column.modelPathSuffix ? `/${props.column.modelPathSuffix}` : ''),
-                    label: getRecordValueForField(props.column.field),
+                    label: content.value,
                 })
             });
             return cellApp.value.mount(cell.value);

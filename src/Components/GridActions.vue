@@ -34,9 +34,9 @@ const props = defineProps({
 const confirmDelete = ref(false);
 
 const defaultActions = [
-    {name: 'view', tip: 'View', icon: EyeIcon, class: 'btn-primary px-1 py-1 rounded-full'},
-    {name: 'edit', tip: 'Edit', icon: PencilIcon, class: 'btn-green px-1 py-1 rounded-full'},
-    {name: 'delete', tip: 'Delete', icon: TrashIcon, class: 'btn-red px-1 py-1 rounded-full'},
+    {name: 'view', tip: 'View', icon: EyeIcon, class: 'btn-blue text-white px-1 py-1 rounded-full'},
+    {name: 'edit', tip: 'Edit', icon: PencilIcon, class: 'btn-green text-white px-1 py-1 rounded-full'},
+    {name: 'delete', tip: 'Delete', icon: TrashIcon, class: 'btn-red text-white px-1 py-1 rounded-full'},
 ];
 
 const processedActions = computed(() => {

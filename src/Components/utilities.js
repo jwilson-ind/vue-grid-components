@@ -1,5 +1,12 @@
 import moment from "moment";
 
+function objectValueFromDotString(obj, str) {
+    if(typeof obj !== 'object' || typeof str !== 'string') {
+        return undefined;
+    }
+    return str.split('.').reduce((o, index) => o ? o[index] : null, obj);
+}
+
 function titleCase(str) {
     return typeof str === 'string'
         ? str.replaceAll('.', ' ').replaceAll('_', ' ').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();})
@@ -15,10 +22,11 @@ function formatMoney(number) {
 }
 
 function formatDate(date, format='MM/DD/YYYY') {
-    return moment(date).format(format);
+    return typeof date === 'string' ? moment(date).format(format) : null;
 }
 
 export {
+    objectValueFromDotString,
     titleCase,
     formatDate,
     formatMoney,
