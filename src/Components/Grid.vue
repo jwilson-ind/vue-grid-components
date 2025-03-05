@@ -294,4 +294,4 @@ function getColumnHeader(column) {
     </div>
 </template>
 
-<style src="../../ModelForm/multiselect.css"></style>
+<style src="../multiselect.css"></style>
